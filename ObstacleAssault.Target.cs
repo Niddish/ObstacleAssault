@@ -3,13 +3,13 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class ObstacleAssaultVSAFETarget : TargetRules
+public class ObstacleAssaultTarget : TargetRules
 {
-	public ObstacleAssaultVSAFETarget(TargetInfo Target) : base(Target)
+	public ObstacleAssaultTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 
-		ExtraModuleNames.AddRange( new string[] { "ObstacleAssaultVSAFE" } );
+		ExtraModuleNames.AddRange( new string[] { "ObstacleAssault" } );
 	}
 }
