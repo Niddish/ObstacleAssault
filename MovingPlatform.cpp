@@ -16,15 +16,56 @@ void AMovingPlatform::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	MyInt = 9;
-	APlusB = InputA + InputB;
+StartPosition = GetActorLocation();
 	
+	// UE_LOG(LogTemp, Display, TEXT("Configured Moved Distance: %f"), DistanceTraveled);
+
+	FString Name = GetName();
+
+	UE_LOG(LogTemp, Display, TEXT("BeginPlay: %s"), *Name);
+
 }
 
 // Called every frame
-void AMovingPlatform::Tick(float DeltaTime)
-{
+void AMovingPlatform::Tick(float DeltaTime){
 	Super::Tick(DeltaTime);
 
+	MovePlatform(DeltaTime);
+	RotatePlatform(DeltaTime);
+
 }
+
+void AMovingPlatform::RotatePlatform(float DeltaTime){
+	UE_LOG(LogTemp, Display, TEXT("%s Rotating..."), *GetName());
+}
+
+void AMovingPlatform::MovePlatform(float DeltaTime)
+{
+	if (ShouldPlatformReturn())
+	{
+		FVector MoveDirection = PlatformVelocity.GetSafeNormal();
+		StartPosition = StartPosition + MoveDirection * MovedDistance;
+		SetActorLocation(StartPosition);
+		PlatformVelocity = -PlatformVelocity;
+	}
+	else
+	{
+		FVector CurrentLocation = GetActorLocation();
+		CurrentLocation = CurrentLocation + (PlatformVelocity * DeltaTime);
+		SetActorLocation(CurrentLocation);
+	}
+}
+
+
+
+bool AMovingPlatform::ShouldPlatformReturn(){
+	return GetDistanceMoved() > MovedDistance;
+}
+
+float AMovingPlatform::GetDistanceMoved(){
+	return FVector::Dist(StartPosition, GetActorLocation());
+}
+
+
+
 
